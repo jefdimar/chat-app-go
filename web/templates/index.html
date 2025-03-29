@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Go Chat App</title>
+    <title>Chat App</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -41,29 +41,68 @@
         font-size: 0.8em;
         color: #666;
       }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      .user-info {
+        text-align: right;
+      }
+      .welcome {
+        margin-bottom: 5px;
+      }
+      .auth-links a {
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
-    <h1>Go Chat App</h1>
-
-    <div id="username-container">
-      <label for="username">Enter your username:</label>
-      <input type="text" id="username" placeholder="Username" />
-      <button id="join-btn">Join Chat</button>
+    <div class="header">
+      <h1>Chat App</h1>
+      <div class="user-info">
+        {{if .IsAuthenticated}}
+        <p class="welcome">Welcome, {{.Username}}!</p>
+        <div class="auth-links">
+          <a href="/logout">Logout</a>
+        </div>
+        {{else}}
+        <div class="auth-links">
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+        </div>
+        {{end}}
+      </div>
     </div>
 
-    <div id="chat-container" style="display: none">
-      <div id="chat-box"></div>
+    <div class="content">
+      {{if .IsAuthenticated}}
+      <p>You are logged in and can start chatting!</p>
+      <div id="username-container">
+        <label for="username">Enter your username:</label>
+        <input type="text" id="username" placeholder="Username" />
+        <button id="join-btn">Join Chat</button>
+      </div>
 
-      <form id="message-form">
-        <input
-          type="text"
-          id="message-input"
-          placeholder="Type a message..."
-          autocomplete="off"
-        />
-        <button type="submit">Send</button>
-      </form>
+      <div id="chat-container" style="display: none">
+        <div id="chat-box"></div>
+
+        <form id="message-form">
+          <input
+            type="text"
+            id="message-input"
+            placeholder="Type a message..."
+            autocomplete="off"
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+      {{else}}
+      <p>Please login or register to start chatting.</p>
+      {{end}}
     </div>
 
     <script>
